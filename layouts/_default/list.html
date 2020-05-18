@@ -1,0 +1,32 @@
+{{ define "main" }}
+<h1>Intro to {{ $.Site.Data.openapi.info.title }} :sparkles:</h1></h1>
+<p>{{ $.Site.Data.openapi.info.version }}</p>
+{{ $.Site.Data.openapi.info.description | markdownify }}
+{{ range $.Site.Data.openapi.paths }}
+{{ range . }}
+ <h1>{{ .summary }}</h1></h1>
+ <p>{{ .description | markdownify }}</p>
+ {{ range .responses }}
+ {{ highlight ( .content | jsonify  (dict "prefix" " " "indent" "  ")  ) "json" "" }}
+  {{ end }}
+ {{ end }}
+{{ end }}
+{{ end }}
+
+{{ define "toc" }}
+    <ul id="toc" class="toc-list-h1">
+        {{ $headers := partial "funcs/toc_from_pages" .Site.RegularPages }}
+        {{ range $headers }}
+            <li>
+                <a href="#{{ .id }}" class="toc-h{{ .level }} toc-link" data-title="{{ .title }}">{{ .title }}</a>
+                {{if .sub }}
+                    <ul class="toc-list-h2">
+                        {{range .sub}}
+                            <li><a href="#{{ .id }}" class="toc-h{{ .level }} toc-link" data-title="{{ .title }}">{{ .title }}</a></li>
+                        {{end}}
+                    </ul>
+                {{end}}
+            </li>
+        {{end}}
+    </ul>
+{{ end }}

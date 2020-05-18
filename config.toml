@@ -1,6 +1,5 @@
 baseURL = "https://cran-checks-docs.netlify.app"
 languageCode = "en-us"
-title = "CRAN checks API"
 disableKinds = ["taxonomyTerm"]
 enableEmoji = true
 
@@ -10,8 +9,7 @@ enableEmoji = true
 
 [languages.en]
 languageName = "English"
-weight = 2
-title = "CRAN checks API"
+weight = 20
 # Left sidebar footer items. Use HTMl or Markdown.
 toc_footers = [ 
 "Documentation Powered by [DocuAPI](https://github.com/bep/docuapi)",
@@ -23,13 +21,7 @@ search = true
   
 # Configure the language example tabs.
 [[params.language_tabs]]
-key = "r"
-name = "R" 
-[[params.language_tabs]]
-key = "JavaScript"
+key = "shell"
 name = "Shell"
-[[params.language_tabs]]
-key = "yaml"
-name = "Headers"
 
 ignoreFiles = ["\\.Rmd$", "\\.html$"]
