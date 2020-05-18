@@ -2,12 +2,12 @@
 <h1>Intro to {{ $.Site.Data.openapi.info.title }} {{ emojify ":sparkles:" }}</h1></h1>
 <p>{{ $.Site.Data.openapi.info.version }}</p>
 {{ $.Site.Data.openapi.info.description | markdownify }}
-{{ range $.Site.Data.openapi.paths }}
-{{ . }} lala
-{{ range . }}
- <h1>{{ .summary }}</h1></h1>
- <p>{{ .description | markdownify }}</p>
- {{ range .responses }}
+{{ range $key, $value :=$.Site.Data.openapi.paths }}
+ {{ highlight $key "shell" "" }}
+{{ range $key, $value := $value }}
+ <h1>{{ $value.summary }}</h1></h1>
+ <p>{{ $value.description | markdownify }}</p>
+ {{ range $value.responses }}
  {{ highlight ( .content | jsonify  (dict "prefix" " " "indent" "  ")  ) "json" "" }}
   {{ end }}
  {{ end }}
