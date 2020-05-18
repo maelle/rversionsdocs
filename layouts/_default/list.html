@@ -1,16 +1,21 @@
 {{ define "main" }}
+{{ $scratch := newScratch }}
+{{ $scratch.Set "url" (partial "url.html" . ) }}
 <h1>Intro to {{ $.Site.Data.openapi.info.title }} ({{ $.Site.Data.openapi.info.version }}) {{ emojify ":sparkles:" }}</h1></h1>
 
-<p><a href="{{ partial "url.html" . }}/openapi.yaml">{{ emojify ":eyes:" }}Download OpenAPI specification</a></p>
+<p><a href="{{ partial "url.html" . }}openapi.yaml">{{ emojify ":eyes:" }}Download OpenAPI specification</a></p>
 <p></p>
 {{ $.Site.Data.openapi.info.description | markdownify }}
 {{ range $key, $value :=$.Site.Data.openapi.paths }}
- {{ highlight $key "shell" "" }}
+ {{ highlight (delimit ( slice "curl" " " ($scratch.Get "url") $key ) "" ) "shell" "" }}
+ {{ highlight ( ( getJSON (delimit ( slice ($scratch.Get "url") $key ) "" ) ) | jsonify  (dict "prefix" " " "indent" "  ")  ) "json" "" }}
 {{ range $key, $value := $value }}
  <h1>{{ $value.summary }}</h1></h1>
  <p>{{ $value.description | markdownify }}</p>
  {{ range $value.responses }}
- {{ highlight ( .content | jsonify  (dict "prefix" " " "indent" "  ")  ) "json" "" }}
+ 
+ {{ $url := replace (index (index (index .content "application/json") "schema" ) "$ref") "#" ($scratch.Get "url") }}
+ 
   {{ end }}
  {{ end }}
 {{ end }}
