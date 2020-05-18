@@ -1,0 +1,5 @@
+{{ $url := "" }}
+{{ range (first 1 ( first 1 $.Site.Data.openapi.servers )) }}
+  {{ $url = .url }}
+{{ end }}
+{{ return $url }}

@@ -1,6 +1,8 @@
 {{ define "main" }}
-<h1>Intro to {{ $.Site.Data.openapi.info.title }} {{ emojify ":sparkles:" }}</h1></h1>
-<p>{{ $.Site.Data.openapi.info.version }}</p>
+<h1>Intro to {{ $.Site.Data.openapi.info.title }} ({{ $.Site.Data.openapi.info.version }}) {{ emojify ":sparkles:" }}</h1></h1>
+
+<p><a href="{{ partial "url.html" . }}/openapi.yaml">{{ emojify ":eyes:" }}Download OpenAPI specification</a></p>
+<p></p>
 {{ $.Site.Data.openapi.info.description | markdownify }}
 {{ range $key, $value :=$.Site.Data.openapi.paths }}
  {{ highlight $key "shell" "" }}
