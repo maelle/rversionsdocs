@@ -7,11 +7,14 @@
 <p></p>
 {{ $.Site.Data.openapi.info.description | markdownify }}
 {{ range $key, $value :=$.Site.Data.openapi.paths }}
- {{ highlight (delimit ( slice "curl" " " ($scratch.Get "url") $key ) "" ) "shell" "" }}
- {{ highlight ( ( getJSON (delimit ( slice ($scratch.Get "url") $key ) "" ) ) | jsonify  (dict "prefix" " " "indent" "  ")  ) "json" "" }}
+{{ $scratch.Set "path" $key }}
 {{ range $key, $value := $value }}
  <h1>{{ $value.summary }}</h1></h1>
  <p>{{ $value.description | markdownify }}</p>
+{{ if eq $key "get" }}
+ {{ highlight (delimit ( slice "curl" " " ($scratch.Get "url") ( $scratch.Get "path" ) ) "" ) "shell" "" }}
+ {{ highlight ( ( getJSON (delimit ( slice ($scratch.Get "url") ( $scratch.Get "path" ) ) "" ) ) | jsonify  (dict "prefix" " " "indent" "  ")  ) "json" "" }}
+ {{ end }}
  {{ range $value.responses }}
  
  {{ $url := replace (index (index (index .content "application/json") "schema" ) "$ref") "#" ($scratch.Get "url") }}
